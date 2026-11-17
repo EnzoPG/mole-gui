@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mole Friend</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="popover-root" class="view-container">
+    <!-- HEADER -->
+    <header class="popover-header">
+      <div class="brand-row">
+        <div class="mole-avatar" title="Your Mole Friend">
+          <svg viewBox="0 0 64 64" width="36" height="36">
+            <ellipse cx="32" cy="52" rx="22" ry="6" fill="#2c221e"/>
+            <path d="M15 48 C15 24, 49 24, 49 48 Z" fill="#634c3c"/>
+            <circle cx="21" cy="27" r="5" fill="#4a382b"/>
+            <circle cx="43" cy="27" r="5" fill="#4a382b"/>
+            <ellipse cx="32" cy="38" rx="9.5" ry="6" fill="#e0b094"/>
+            <circle cx="32" cy="36" r="3.3" fill="#ec728c"/>
+            <circle cx="25" cy="31" r="2.2" fill="#181412"/>
+            <circle cx="39" cy="31" r="2.2" fill="#181412"/>
+            <circle cx="25.7" cy="30.3" r="0.85" fill="#ffffff"/>
+            <circle cx="39.7" cy="30.3" r="0.85" fill="#ffffff"/>
+            <path d="M29.2 41 Q32 43.2 34.8 41" stroke="#5a3d30" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-title">Mole Friend <span class="badge" id="pop-version">v1.71</span></div>
+          <div class="brand-sub" id="pop-status-text">Burrow is cozy &amp; clean</div>
+        </div>
+      </div>
+      <div class="header-right">
+        <button class="icon-btn" id="btn-refresh" title="Refresh Metrics">↻</button>
+        <button class="icon-btn danger-btn" id="btn-stop" title="Stop Running Task" disabled>⏹</button>
+      </div>
+    </header>
+
+    <!-- GAUGES -->
+    <div class="pop-gauges">
+      <div class="pop-gauge-card">
+        <div class="gauge-top">
+          <span class="gauge-label">RAM Load</span>
+          <span class="gauge-val" id="pop-mem-used">-- GB</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill amber" id="pop-mem-bar" style="width: 35%"></div></div>
+        <div class="gauge-foot" id="pop-mem-sub">--% of -- GB</div>
+      </div>
+      <div class="pop-gauge-card">
+        <div class="gauge-top">
+          <span class="gauge-label">Disk Free</span>
+          <span class="gauge-val" id="pop-disk-free">-- GB</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="pop-disk-bar" style="width: 10%"></div></div>
+        <div class="gauge-foot" id="pop-disk-sub">-- / -- GB used</div>
+      </div>
+    </div>
+
+    <!-- MINI PILL TABS -->
+    <nav class="pill-tabs">
+      <button class="pill-tab active" data-tab="actions">⚡ Actions</button>
+      <button class="pill-tab" data-tab="explore">📊 Disk</button>
+      <button class="pill-tab" data-tab="config">🛡️ Config</button>
+      <button class="pill-tab" data-tab="console">💻 Output <span class="dot-indicator hidden" id="console-dot"></span></button>
+    </nav>
+
+    <!-- TAB 1: QUICK ACTIONS -->
+    <section class="tab-view active" id="tab-actions">
+      <div class="action-card-list">
+        <div class="action-row">
+          <div class="action-meta">
+            <strong>🧹 Deep Clean (`mo clean`)</strong>
+            <span>System, browser &amp; IDE caches, logs</span>
+          </div>
+          <div class="action-btns">
+            <button class="btn ghost xs" data-run="clean" data-dry="true">Preview</button>
+            <button class="btn primary xs" data-run="clean" data-dry="false">Clean</button>
+          </div>
+        </div>
+
+        <div class="action-row">
+          <div class="action-meta">
+            <strong>⚡ System Optimize (`mo optimize`)</strong>
+            <span>DNS, Spotlight, SQLite, Finder &amp; services</span>
+          </div>
+          <div class="action-btns">
+            <button class="btn ghost xs" data-run="optimize" data-dry="true">Audit</button>
+            <button class="btn primary xs" data-run="optimize" data-dry="false">Optimize</button>
+          </div>
+        </div>
+
+        <div class="action-row">
+          <div class="action-meta">
+            <strong>📦 Project Purge (`mo purge`)</strong>
+            <span>Old `node_modules`, `target`, `build`, `.venv`</span>
+          </div>
+          <div class="action-btns">
+            <button class="btn ghost xs" data-run="purge" data-dry="true">Preview</button>
+            <button class="btn primary xs" data-run="purge" data-dry="false">Purge</button>
+          </div>
+        </div>
+
+        <div class="action-row">
+          <div class="action-meta">
+            <strong>💿 Installer Hunter (`mo installer`)</strong>
+            <span>Find `.dmg`, `.pkg`, `.iso`, `.xip` files</span>
+          </div>
+          <div class="action-btns">
+            <button class="btn ghost xs" data-run="installer" data-dry="true">Scan</button>
+            <button class="btn secondary xs" data-term="installer">Select</button>
+          </div>
+        </div>
+
+        <div class="action-row">
+          <div class="action-meta">
+            <strong>🗑️ App Uninstaller (`mo uninstall`)</strong>
+            <span>Remove apps + all hidden Library leftovers</span>
+          </div>
+          <div class="action-btns">
+            <button class="btn secondary xs" data-term="uninstall">Open Uninstaller</button>
+          </div>
+        </div>
+
+        <div class="action-row">
+          <div class="action-meta">
+            <strong>🔐 Touch ID Sudo (`mo touchid`)</strong>
+            <span id="touchid-sub-status">Use fingerprint for Mole sudo tasks</span>
+          </div>
+          <div class="action-btns">
+            <button class="btn ghost xs" data-term="touchid">Configure</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: DISK EXPLORER -->
+    <section class="tab-view" id="tab-explore">
+      <div class="explore-bar">
+        <input type="text" id="analyze-path-input" class="input-text" value="~" placeholder="Path (e.g. ~ or ~/Library)" />
+        <button class="btn primary xs" id="btn-run-analyze">Scan</button>
+        <button class="btn ghost xs" id="btn-analyze-up" title="Parent folder">↑</button>
+      </div>
+      <div class="quick-chips">
+        <button class="chip" data-path="~">~</button>
+        <button class="chip" data-path="~/Library">~/Library</button>
+        <button class="chip" data-path="~/Library/Caches">Caches</button>
+        <button class="chip" data-path="~/Downloads">Downloads</button>
+        <button class="chip" data-path="/Applications">Apps</button>
+      </div>
+      <div class="analyze-list" id="analyze-results">
+        <div class="empty-msg">Pick a folder above or click Scan to analyze disk space.</div>
+      </div>
+    </section>
+
+    <!-- TAB 3: CONFIG & WHITELISTS -->
+    <section class="tab-view" id="tab-config">
+      <div class="cfg-selector-row">
+        <select id="cfg-select" class="cfg-select">
+          <option value="whitelist_clean">🛡️ Clean Whitelist (~/.config/mole/whitelist)</option>
+          <option value="whitelist_optimize">⚙️ Optimize Whitelist (whitelist_optimize)</option>
+          <option value="purge_paths">📂 Purge Scan Paths (~/.config/mole/purge_paths)</option>
+        </select>
+        <button class="btn primary xs" id="btn-save-cfg">Save</button>
+      </div>
+      <textarea id="cfg-editor" class="cfg-textarea" placeholder="# One path or rule per line..."></textarea>
+      <div class="cfg-foot">
+        <button class="btn ghost xs" id="btn-load-clean-preview">📄 View Last Dry-Run List</button>
+        <button class="btn ghost xs" data-run="--version" data-dry="false">ℹ️ Version Info</button>
+      </div>
+    </section>
+
+    <!-- TAB 4: LIVE OUTPUT CONSOLE -->
+    <section class="tab-view" id="tab-console">
+      <div class="console-box">
+        <div class="console-head">
+          <span id="pop-console-title">$ mole ready</span>
+          <div class="console-head-right">
+            <span class="status-pill idle" id="pop-run-pill">Idle</span>
+            <button class="text-btn" id="btn-clear-log">Clear</button>
+          </div>
+        </div>
+        <pre id="pop-console-log">Click any action in the Actions tab to run Mole here...</pre>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="popover-footer">
+      <span class="footer-meta" id="footer-uptime">Uptime: --d</span>
+      <div class="footer-links">
+        <button class="text-btn" id="pop-open-tui">⌘ CLI Menu</button>
+        <button class="text-btn danger" id="pop-quit">Quit</button>
+      </div>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
