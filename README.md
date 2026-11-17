@@ -12,7 +12,6 @@ An ultra-lightweight, minimalist macOS companion interface (Menu Bar Friend) for
 1. **Menu Bar Friend (`🐹 <Free>G`)**:
    - Lives in your top macOS menu bar showing live free disk space.
    - Click to open a 360×480 quick-action popover with live Disk & RAM gauges, 1-click **Preview Clean (`--dry-run`)**, **Deep Clean**, **Audit System (`optimize --dry-run`)**, **Scan Artifacts (`purge --dry-run`)**, and a live streaming output console.
-2. **Main Desktop Window**:
    - **Burrow Dashboard:** Live disk space, memory pressure (active + wired + compressed), uptime, Touch ID sudo status, and quick command cards.
    - **Clean & Purge:** Run `--dry-run` previews, inspect `~/.config/mole/clean-list.txt`, or execute `mo clean` and `mo purge`.
    - **Optimize & Audit:** View all 19 macOS health & optimization checks from Mole's catalog and run `mo optimize` (`--dry-run` or live).
