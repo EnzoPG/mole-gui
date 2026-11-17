@@ -1,6 +1,6 @@
 # 🐹 Mole Friend (`mole-gui`)
 
-An ultra-lightweight, minimalist macOS companion interface (Menu Bar Friend + Desktop Window) for **[tw93/Mole](https://github.com/tw93/Mole)** (`mo`).
+An ultra-lightweight, minimalist macOS companion interface (Menu Bar Friend) for **[tw93/Mole](https://github.com/tw93/Mole)** (`mo`).
 
 ## Footprint & Architecture
 - **App Bundle Size:** ~196 KB total (`128 KB` native binary + `64 KB` HTML/CSS/JS UI)
